@@ -139,7 +139,7 @@
             transform: scale(1.05);
         }
 
-        /* Exploding Heart Animation for Step 6 */
+        /* Exploding Heart Animation */
         .exploding-heart-container {
             margin: 20px 0;
             position: relative;
@@ -222,8 +222,7 @@
         </div>
 
         <div class="image-container" id="img-box">
-            <!-- Provided picture -->
-            <img id="display-img" src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=800&q=80" alt="Couple Image">
+            <img id="display-img" src="https://i.pinimg.com/736x/af/cc/1b/afcc1bc1f9e0f64d205233f766b4eced.jpg" alt="Cute Image">
         </div>
 
         <h1 id="title-text">Hey my fav hooman</h1>
@@ -239,7 +238,7 @@
     </div>
 
     <script>
-        // Data Structure for Steps
+        // Steps Configuration
         const steps = [
             {
                 type: 'yes-dodge',
@@ -296,7 +295,7 @@
             },
             {
                 type: 'final',
-                question: "10. And lastly, he's trying to improve for you (although you are not there as a teacher/guide), but he'll 100%, no cap because his life gets colored up just by you showing up every day, every moment in his life.\n\nNothing without you he is."
+                question: "And lastly, he's trying to improve for you (although you are not there as a teacher/guide), but he'll 100%, no cap because his life gets colored up just by you showing up every day, every moment in his life.\n\nNothing without you he is."
             }
         ];
 
@@ -311,7 +310,7 @@
         const progressFill = document.getElementById('progress-fill');
         const mainCard = document.getElementById('main-card');
 
-        // Canvas for falling hearts
+        // Falling Hearts Background Animation
         const canvas = document.getElementById('hearts-canvas');
         const ctx = canvas.getContext('2d');
         let hearts = [];
@@ -383,7 +382,7 @@
             const btnRect = btn.getBoundingClientRect();
 
             const maxX = containerRect.width - btnRect.width - 20;
-            const maxY = 120; // vertical range
+            const maxY = 120;
 
             const randomX = (Math.random() - 0.5) * maxX;
             const randomY = (Math.random() - 0.5) * maxY;
@@ -410,7 +409,6 @@
                 const yBtn = document.getElementById('btn-yes');
                 const nBtn = document.getElementById('btn-no');
 
-                // Hovering Yes dodges twice
                 yBtn.addEventListener('mouseenter', () => {
                     if (yesDodgeCount < 2) {
                         dodgeButton(yBtn);
@@ -427,7 +425,6 @@
                     }
                 });
 
-                // Hovering No always dodges
                 nBtn.addEventListener('mouseenter', () => dodgeButton(nBtn));
                 nBtn.addEventListener('touchstart', (e) => {
                     e.preventDefault();
