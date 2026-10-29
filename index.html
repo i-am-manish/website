@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hey my fav hooman</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #ffe6ea 0%, #ffc0cb 50%, #ffb6c1 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
+            padding: 20px;
+        }
+
+        /* Falling Hearts Canvas */
+        #hearts-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 30px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 15px 35px rgba(220, 53, 69, 0.2);
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            transition: all 0.3s ease;
+        }
+
+        .image-container {
+            width: 100%;
+            height: 280px;
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        h1 {
+            color: #d63384;
+            font-size: 26px;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .question-text {
+            color: #4a4a4a;
+            font-size: 18px;
+            line-height: 1.5;
+            margin-bottom: 25px;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 500;
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            min-height: 60px;
+            position: relative;
+        }
+
+        button {
+            padding: 12px 28px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+            outline: none;
+            user-select: none;
+        }
+
+        .btn-yes {
+            background-color: #ff4d6d;
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 77, 109, 0.4);
+            position: relative;
+            z-index: 2;
+        }
+
+        .btn-yes:hover {
+            background-color: #ff758f;
+            transform: translateY(-2px);
+        }
+
+        .btn-no {
+            background-color: #6c757d;
+            color: white;
+            box-shadow: 0 4px 15px rgba(108, 117, 125, 0.3);
+            position: relative;
+            z-index: 2;
+        }
+
+        .btn-next {
+            background: linear-gradient(45deg, #ff4d6d, #ff758f);
+            color: white;
+            padding: 14px 36px;
+            font-size: 18px;
+            box-shadow: 0 6px 20px rgba(255, 77, 109, 0.4);
+        }
+
+        .btn-next:hover {
+            transform: scale(1.05);
+        }
+
+        /* Exploding Heart Animation for Step 6 */
+        .exploding-heart-container {
+            margin: 20px 0;
+            position: relative;
+            height: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .big-heart {
+            font-size: 60px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+            100% { transform: scale(1); }
+        }
+
+        .particle-heart {
+            position: absolute;
+            font-size: 24px;
+            pointer-events: none;
+            animation: explode 1s forwards ease-out;
+        }
+
+        @keyframes explode {
+            0% {
+                opacity: 1;
+                transform: translate(0, 0) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(var(--tx), var(--ty)) scale(1.5);
+            }
+        }
+
+        /* Final Screen Special Styling */
+        .final-card {
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid #ff758f;
+        }
+
+        .final-text {
+            color: #d63384;
+            font-size: 18px;
+            line-height: 1.7;
+            text-align: left;
+            white-space: pre-line;
+            font-weight: 500;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background-color: #ffe6ea;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff758f, #ff4d6d);
+            width: 10%;
+            transition: width 0.4s ease;
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="hearts-canvas"></canvas>
+
+    <div class="container" id="main-card">
+        <div class="progress-bar" id="progress-bar-container">
+            <div class="progress-fill" id="progress-fill"></div>
+        </div>
+
+        <div class="image-container" id="img-box">
+            <!-- Provided picture -->
+            <img id="display-img" src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=800&q=80" alt="Couple Image">
+        </div>
+
+        <h1 id="title-text">Hey my fav hooman</h1>
+
+        <div class="question-text" id="question-text">
+            Did I break your heart by saying mean things?
+        </div>
+
+        <div class="btn-group" id="btn-group">
+            <button class="btn-yes" id="btn-yes">Yes</button>
+            <button class="btn-no" id="btn-no">No</button>
+        </div>
+    </div>
+
+    <script>
+        // Data Structure for Steps
+        const steps = [
+            {
+                type: 'yes-dodge',
+                question: "1. Did I break your heart by saying mean things?",
+                yesText: "Yes",
+                noText: "No"
+            },
+            {
+                type: 'yes-dodge',
+                question: "2. Did I hurt you by taunting your vulnerabilities?",
+                yesText: "Yes",
+                noText: "No"
+            },
+            {
+                type: 'yes-dodge',
+                question: "3. Did I make you feel bad about yourself the whole time?",
+                yesText: "Yes",
+                noText: "No"
+            },
+            {
+                type: 'yes-dodge',
+                question: "4. Did I fail to make efforts every single time?",
+                yesText: "Yes",
+                noText: "No"
+            },
+            {
+                type: 'yes-dodge',
+                question: "5. Did I seriously mean it?",
+                yesText: "Yes",
+                noText: "No"
+            },
+            {
+                type: 'exploding-heart',
+                question: "Ohh you clicked yes, NVM That stupid bitchass deserves it.\n\nBut he really really does love you...",
+                btnText: "Next ❤️"
+            },
+            {
+                type: 'no-dodge',
+                question: "7. He'll make things right this time fs",
+                yesText: "Yes",
+                noText: "No"
+            },
+            {
+                type: 'no-dodge',
+                question: "8. He will make you feel special",
+                yesText: "Yes",
+                noText: "No"
+            },
+            {
+                type: 'no-dodge',
+                question: "9. He won't make you regret it this time",
+                yesText: "Yes",
+                noText: "No"
+            },
+            {
+                type: 'final',
+                question: "10. And lastly, he's trying to improve for you (although you are not there as a teacher/guide), but he'll 100%, no cap because his life gets colored up just by you showing up every day, every moment in his life.\n\nNothing without you he is."
+            }
+        ];
+
+        let currentStep = 0;
+        let yesDodgeCount = 0;
+
+        // Elements
+        const questionText = document.getElementById('question-text');
+        const btnGroup = document.getElementById('btn-group');
+        const btnYes = document.getElementById('btn-yes');
+        const btnNo = document.getElementById('btn-no');
+        const progressFill = document.getElementById('progress-fill');
+        const mainCard = document.getElementById('main-card');
+
+        // Canvas for falling hearts
+        const canvas = document.getElementById('hearts-canvas');
+        const ctx = canvas.getContext('2d');
+        let hearts = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Heart {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = -20;
+                this.size = Math.random() * 15 + 10;
+                this.speed = Math.random() * 2 + 1;
+                this.opacity = Math.random() * 0.7 + 0.3;
+                this.dx = Math.random() * 1 - 0.5;
+            }
+
+            update() {
+                this.y += this.speed;
+                this.x += this.dx;
+                if (this.y > canvas.height + 20) {
+                    this.reset();
+                }
+            }
+
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.opacity;
+                ctx.fillStyle = '#ff4d6d';
+                ctx.font = `${this.size}px Arial`;
+                ctx.fillText('❤️', this.x, this.y);
+                ctx.restore();
+            }
+        }
+
+        for (let i = 0; i < 40; i++) {
+            hearts.push(new Heart());
+        }
+
+        function animateHearts() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            hearts.forEach(heart => {
+                heart.update();
+                heart.draw();
+            });
+            requestAnimationFrame(animateHearts);
+        }
+        animateHearts();
+
+        // Helper to reset button positioning
+        function resetButtonPositions() {
+            btnYes.style.position = 'static';
+            btnNo.style.position = 'static';
+            btnYes.style.transform = 'none';
+            btnNo.style.transform = 'none';
+        }
+
+        // Dodge logic for buttons
+        function dodgeButton(btn) {
+            const containerRect = btnGroup.getBoundingClientRect();
+            const btnRect = btn.getBoundingClientRect();
+
+            const maxX = containerRect.width - btnRect.width - 20;
+            const maxY = 120; // vertical range
+
+            const randomX = (Math.random() - 0.5) * maxX;
+            const randomY = (Math.random() - 0.5) * maxY;
+
+            btn.style.position = 'relative';
+            btn.style.transform = `translate(${randomX}px, ${randomY}px)`;
+        }
+
+        // Render current step UI
+        function renderStep() {
+            resetButtonPositions();
+            yesDodgeCount = 0;
+
+            const step = steps[currentStep];
+            progressFill.style.width = `${((currentStep + 1) / steps.length) * 100}%`;
+
+            if (step.type === 'yes-dodge') {
+                questionText.innerText = step.question;
+                btnGroup.innerHTML = `
+                    <button class="btn-yes" id="btn-yes">${step.yesText}</button>
+                    <button class="btn-no" id="btn-no">${step.noText}</button>
+                `;
+
+                const yBtn = document.getElementById('btn-yes');
+                const nBtn = document.getElementById('btn-no');
+
+                // Hovering Yes dodges twice
+                yBtn.addEventListener('mouseenter', () => {
+                    if (yesDodgeCount < 2) {
+                        dodgeButton(yBtn);
+                        yesDodgeCount++;
+                    }
+                });
+
+                yBtn.addEventListener('click', () => {
+                    if (yesDodgeCount >= 2) {
+                        nextStep();
+                    } else {
+                        dodgeButton(yBtn);
+                        yesDodgeCount++;
+                    }
+                });
+
+                // Hovering No always dodges
+                nBtn.addEventListener('mouseenter', () => dodgeButton(nBtn));
+                nBtn.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                    dodgeButton(nBtn);
+                });
+
+            } else if (step.type === 'exploding-heart') {
+                questionText.innerText = step.question;
+                btnGroup.innerHTML = `
+                    <div class="exploding-heart-container">
+                        <div class="big-heart" id="big-heart">💖</div>
+                    </div>
+                    <div>
+                        <button class="btn-next" id="btn-next">${step.btnText}</button>
+                    </div>
+                `;
+
+                const bigHeart = document.getElementById('big-heart');
+                const nextBtn = document.getElementById('btn-next');
+
+                function triggerExplosion() {
+                    const container = document.querySelector('.exploding-heart-container');
+                    for (let i = 0; i < 18; i++) {
+                        const p = document.createElement('div');
+                        p.className = 'particle-heart';
+                        p.innerText = '💗';
+                        const angle = (i / 18) * Math.PI * 2;
+                        const dist = Math.random() * 100 + 50;
+                        const tx = Math.cos(angle) * dist + 'px';
+                        const ty = Math.sin(angle) * dist + 'px';
+
+                        p.style.setProperty('--tx', tx);
+                        p.style.setProperty('--ty', ty);
+                        container.appendChild(p);
+
+                        setTimeout(() => p.remove(), 1000);
+                    }
+                }
+
+                bigHeart.addEventListener('click', triggerExplosion);
+                nextBtn.addEventListener('click', () => {
+                    triggerExplosion();
+                    setTimeout(nextStep, 400);
+                });
+
+            } else if (step.type === 'no-dodge') {
+                questionText.innerText = step.question;
+                btnGroup.innerHTML = `
+                    <button class="btn-yes" id="btn-yes">${step.yesText}</button>
+                    <button class="btn-no" id="btn-no">${step.noText}</button>
+                `;
+
+                const yBtn = document.getElementById('btn-yes');
+                const nBtn = document.getElementById('btn-no');
+
+                yBtn.addEventListener('click', nextStep);
+
+                nBtn.addEventListener('mouseenter', () => dodgeButton(nBtn));
+                nBtn.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                    dodgeButton(nBtn);
+                });
+
+            } else if (step.type === 'final') {
+                mainCard.classList.add('final-card');
+                questionText.className = 'final-text';
+                questionText.innerText = step.question;
+                btnGroup.innerHTML = `
+                    <div style="font-size: 32px; margin-top: 10px;">❤️✨🌸</div>
+                `;
+            }
+        }
+
+        function nextStep() {
+            if (currentStep < steps.length - 1) {
+                currentStep++;
+                renderStep();
+            }
+        }
+
+        // Initialize
+        renderStep();
+    </script>
+</body>
+</html>
