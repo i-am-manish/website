@@ -180,7 +180,7 @@
             }
         }
 
-        /* Final Screen Special Styling */
+        /* Final Screen Styling */
         .final-card {
             background: rgba(255, 255, 255, 0.95);
             border: 2px solid #ff758f;
@@ -409,15 +409,16 @@
                 const yBtn = document.getElementById('btn-yes');
                 const nBtn = document.getElementById('btn-no');
 
+                // Hovering Yes dodges 1 time now
                 yBtn.addEventListener('mouseenter', () => {
-                    if (yesDodgeCount < 2) {
+                    if (yesDodgeCount < 1) {
                         dodgeButton(yBtn);
                         yesDodgeCount++;
                     }
                 });
 
                 yBtn.addEventListener('click', () => {
-                    if (yesDodgeCount >= 2) {
+                    if (yesDodgeCount >= 1) {
                         nextStep();
                     } else {
                         dodgeButton(yBtn);
