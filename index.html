@@ -46,8 +46,9 @@
     .btn-group {
       display: flex;
       justify-content: center;
-      gap: 20px;
+      align-items: center;
       margin-top: 20px;
+      min-height: 80px;
     }
 
     button {
@@ -57,7 +58,7 @@
       border: none;
       border-radius: 50px;
       cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
+      transition: transform 0.2s, box-shadow 0.2s, font-size 0.2s, padding 0.2s;
     }
 
     .btn-yes {
@@ -67,17 +68,7 @@
     }
 
     .btn-yes:hover {
-      transform: scale(1.08);
       box-shadow: 0 12px 20px rgba(255, 71, 87, 0.6);
-    }
-
-    .btn-no {
-      background: #e0e0e0;
-      color: #666;
-    }
-
-    .btn-no:hover {
-      transform: scale(0.95);
     }
 
     /* Floating particles canvas */
@@ -126,8 +117,7 @@
   <div class="card" id="quizCard">
     <h1 id="questionText">My baby loves strawberries ? 🍓</h1>
     <div class="btn-group">
-      <button class="btn-yes" onclick="handleYes()">YES! 💕</button>
-      <button class="btn-no" onclick="handleNo()">No 🥺</button>
+      <button class="btn-yes" id="yesBtn" onclick="handleYes()">YES! 💕</button>
     </div>
   </div>
 
@@ -145,8 +135,10 @@
     ];
 
     let currentStep = 0;
+    let yesClickCount = 0;
     const questionText = document.getElementById("questionText");
     const quizCard = document.getElementById("quizCard");
+    const yesBtn = document.getElementById("yesBtn");
     const canvas = document.getElementById("canvas");
     const ctx = canvas.getContext("2d");
 
@@ -166,10 +158,10 @@
         this.x = x;
         this.y = y;
         this.emoji = emoji;
-        this.size = Math.random() * 25 + 25; 
-        this.vx = (Math.random() - 0.5) * 12;
-        this.vy = (Math.random() - 0.7) * 14;
-        this.gravity = 0.35;
+        this.size = Math.random() * 30 + 25; 
+        this.vx = (Math.random() - 0.5) * 18;
+        this.vy = (Math.random() - 0.6) * 20;
+        this.gravity = 0.4;
         this.opacity = 1;
         this.rotation = Math.random() * Math.PI * 2;
         this.vRot = (Math.random() - 0.5) * 0.2;
@@ -180,7 +172,7 @@
         this.y += this.vy;
         this.vy += this.gravity;
         this.rotation += this.vRot;
-        this.opacity -= 0.008;
+        this.opacity -= 0.006;
       }
 
       draw() {
@@ -194,11 +186,12 @@
       }
     }
 
-    function createExplosion(emoji, count = 70) {
+    function createExplosion(emojiArray, count = 120) {
       const originX = window.innerWidth / 2;
       const originY = window.innerHeight / 2;
       for (let i = 0; i < count; i++) {
-        particles.push(new Particle(originX, originY, emoji));
+        const randomEmoji = emojiArray[Math.floor(Math.random() * emojiArray.length)];
+        particles.push(new Particle(originX, originY, randomEmoji));
       }
     }
 
@@ -218,28 +211,37 @@
     // Play YouTube Music on 2nd Question YES
     function playYouTubeSong() {
       const iframe = document.getElementById("youtube-player");
-      // Re-triggering the iframe source with autoplay=1 enabled
       iframe.src = "https://www.youtube.com/embed/gset79KMmt0?autoplay=1&enablejsapi=1";
     }
 
     // Handles YES clicks
     function handleYes() {
       const q = questions[currentStep];
+      yesClickCount++;
 
-      // Trigger Explosion based on item type
-      if (q.type === "strawberries") {
-        createExplosion("🍓");
-      } else if (q.type === "firecrackers") {
-        createExplosion("🎆");
-        createExplosion("✨");
-        // Play the exact YouTube song on the 2nd question YES!
-        playYouTubeSong();
-      } else if (q.type === "fries") {
-        createExplosion("🍟");
-      } else if (q.type === "christmas") {
-        createExplosion("🎄");
-        createExplosion("❄️");
-        createExplosion("🎁");
+      // Make the YES button bigger and bigger on clicks!
+      const currentPaddingV = 14 + (yesClickCount * 10);
+      const currentPaddingH = 32 + (yesClickCount * 20);
+      const currentFontSize = 1.2 + (yesClickCount * 0.4);
+      yesBtn.style.padding = `${currentPaddingV}px ${currentPaddingH}px`;
+      yesBtn.style.fontSize = `${currentFontSize}rem`;
+
+      // Trigger explosions on 3rd click or specific items
+      if (yesClickCount === 3) {
+        // BIG explosion with hearts, fries, and strawberries across the whole page!
+        createExplosion(["❤️", "💖", "🍟", "🍓", "✨", "💕"], 180);
+      } else {
+        // Standard item explosion for other clicks
+        if (q.type === "strawberries") {
+          createExplosion(["🍓"], 80);
+        } else if (q.type === "firecrackers") {
+          createExplosion(["🎆", "✨"], 80);
+          playYouTubeSong(); // Play Sia song on 2nd question YES
+        } else if (q.type === "fries") {
+          createExplosion(["🍟"], 80);
+        } else if (q.type === "christmas") {
+          createExplosion(["🎄", "❄️", "🎁"], 80);
+        }
       }
 
       currentStep++;
@@ -250,16 +252,8 @@
           questionText.innerText = questions[currentStep].text;
         }, 300);
       } else {
-        setTimeout(showFinalMessage, 500);
+        setTimeout(showFinalMessage, 600);
       }
-    }
-
-    // Handles NO click playful behavior
-    function handleNo() {
-      const btnNo = document.querySelector('.btn-no');
-      btnNo.style.position = 'relative';
-      btnNo.style.left = (Math.random() * 100 - 50) + 'px';
-      btnNo.style.top = (Math.random() * 100 - 50) + 'px';
     }
 
     // Final Screen Message
