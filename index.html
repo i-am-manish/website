@@ -122,9 +122,9 @@
     </div>
   </div>
 
-  <!-- Hidden YouTube Audio Player (starts right from 0s) -->
+  <!-- Hidden YouTube Audio Player (starts at 10 seconds, skipping the first 10s) -->
   <div id="audio-container">
-    <iframe id="youtube-player" width="0" height="0" src="https://www.youtube.com/embed/gset79KMmt0?enablejsapi=1&autoplay=0&start=0" frameborder="0" allow="autoplay"></iframe>
+    <iframe id="youtube-player" width="0" height="0" src="https://www.youtube.com/embed/gset79KMmt0?enablejsapi=1&autoplay=0&start=10" frameborder="0" allow="autoplay"></iframe>
   </div>
 
   <script>
@@ -210,10 +210,10 @@
     }
     animate();
 
-    // Play YouTube Music from the start (0 seconds)
+    // Play YouTube Music starting at 10 seconds
     function playYouTubeSong() {
       const iframe = document.getElementById("youtube-player");
-      iframe.src = "https://www.youtube.com/embed/gset79KMmt0?autoplay=1&enablejsapi=1&start=0";
+      iframe.src = "https://www.youtube.com/embed/gset79KMmt0?autoplay=1&enablejsapi=1&start=10";
     }
 
     // Handles YES clicks
@@ -227,7 +227,7 @@
       yesBtn.style.padding = `${currentPaddingV}px ${currentPaddingH}px`;
       yesBtn.style.fontSize = `${currentFontSize}rem`;
 
-      // Play music on the 2nd question YES right from the start
+      // Play music starting at 10s on the 2nd question YES
       if (yesClickCount === 2) {
         playYouTubeSong();
       }
