@@ -1,513 +1,299 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hey my fav hooman</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>For My Girl 💕</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-        body {
-            background: linear-gradient(135deg, #ffe6ea 0%, #ffc0cb 50%, #ffb6c1 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow-x: hidden;
-            position: relative;
-            padding: 20px;
-        }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #feada6 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      position: relative;
+    }
 
-        /* Falling Hearts Canvas */
-        #hearts-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-        }
+    /* Container Card */
+    .card {
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(10px);
+      padding: 40px 30px;
+      border-radius: 24px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+      text-align: center;
+      max-width: 500px;
+      width: 90%;
+      z-index: 10;
+      transition: all 0.5s ease;
+    }
 
-        .container {
-            background: rgba(255, 255, 255, 0.92);
-            backdrop-filter: blur(10px);
-            border-radius: 24px;
-            padding: 30px;
-            width: 100%;
-            max-width: 500px;
-            box-shadow: 0 15px 35px rgba(220, 53, 69, 0.2);
-            text-align: center;
-            position: relative;
-            z-index: 10;
-            border: 2px solid rgba(255, 255, 255, 0.8);
-            transition: all 0.3s ease;
-        }
+    h1 {
+      color: #ff4757;
+      font-size: 1.8rem;
+      margin-bottom: 30px;
+      line-height: 1.4;
+    }
 
-        .image-container {
-            width: 100%;
-            height: 280px;
-            border-radius: 16px;
-            overflow: hidden;
-            margin-bottom: 20px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-            position: relative;
-        }
+    .btn-group {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 20px;
+    }
 
-        .image-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: center;
-        }
+    button {
+      padding: 14px 32px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
 
-        h1 {
-            color: #d63384;
-            font-size: 26px;
-            margin-bottom: 15px;
-            font-weight: 700;
-        }
+    .btn-yes {
+      background: linear-gradient(45deg, #ff4757, #ff6b81);
+      color: white;
+      box-shadow: 0 8px 15px rgba(255, 71, 87, 0.4);
+    }
 
-        .question-text {
-            color: #4a4a4a;
-            font-size: 18px;
-            line-height: 1.5;
-            margin-bottom: 25px;
-            min-height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 500;
-        }
+    .btn-yes:hover {
+      transform: scale(1.08);
+      box-shadow: 0 12px 20px rgba(255, 71, 87, 0.6);
+    }
 
-        .btn-group {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 20px;
-            min-height: 60px;
-            position: relative;
-        }
+    .btn-no {
+      background: #e0e0e0;
+      color: #666;
+    }
 
-        button {
-            padding: 12px 28px;
-            font-size: 16px;
-            font-weight: 600;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
-            outline: none;
-            user-select: none;
-        }
+    .btn-no:hover {
+      transform: scale(0.95);
+    }
 
-        .btn-yes {
-            background-color: #ff4d6d;
-            color: white;
-            box-shadow: 0 4px 15px rgba(255, 77, 109, 0.4);
-            position: relative;
-            z-index: 2;
-        }
+    /* Floating particles canvas */
+    #canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 5;
+    }
 
-        .btn-yes:hover {
-            background-color: #ff758f;
-            transform: translateY(-2px);
-        }
+    /* Final Card Styling */
+    .final-card h2 {
+      color: #ff4757;
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
 
-        .btn-no {
-            background-color: #6c757d;
-            color: white;
-            box-shadow: 0 4px 15px rgba(108, 117, 125, 0.3);
-            position: relative;
-            z-index: 2;
-        }
+    .final-card p {
+      color: #444;
+      font-size: 1.15rem;
+      line-height: 1.7;
+      margin-bottom: 15px;
+    }
 
-        .btn-next {
-            background: linear-gradient(45deg, #ff4d6d, #ff758f);
-            color: white;
-            padding: 14px 36px;
-            font-size: 18px;
-            box-shadow: 0 6px 20px rgba(255, 77, 109, 0.4);
-        }
-
-        .btn-next:hover {
-            transform: scale(1.05);
-        }
-
-        /* Exploding Heart Animation */
-        .exploding-heart-container {
-            margin: 20px 0;
-            position: relative;
-            height: 80px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .big-heart {
-            font-size: 60px;
-            cursor: pointer;
-            transition: transform 0.2s ease;
-            animation: pulse 1.5s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.15); }
-            100% { transform: scale(1); }
-        }
-
-        .particle-heart {
-            position: absolute;
-            font-size: 24px;
-            pointer-events: none;
-            animation: explode 1s forwards ease-out;
-        }
-
-        @keyframes explode {
-            0% {
-                opacity: 1;
-                transform: translate(0, 0) scale(1);
-            }
-            100% {
-                opacity: 0;
-                transform: translate(var(--tx), var(--ty)) scale(1.5);
-            }
-        }
-
-        /* Final Screen Styling */
-        .final-card {
-            background: rgba(255, 255, 255, 0.95);
-            border: 2px solid #ff758f;
-        }
-
-        .final-text {
-            color: #d63384;
-            font-size: 18px;
-            line-height: 1.7;
-            text-align: left;
-            white-space: pre-line;
-            font-weight: 500;
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 6px;
-            background-color: #ffe6ea;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #ff758f, #ff4d6d);
-            width: 10%;
-            transition: width 0.4s ease;
-        }
-    </style>
+    .signature {
+      margin-top: 25px;
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: #ff4757;
+      letter-spacing: 1px;
+    }
+  </style>
 </head>
 <body>
 
-    <canvas id="hearts-canvas"></canvas>
+  <canvas id="canvas"></canvas>
 
-    <div class="container" id="main-card">
-        <div class="progress-bar" id="progress-bar-container">
-            <div class="progress-fill" id="progress-fill"></div>
-        </div>
-
-        <div class="image-container" id="img-box">
-            <img id="display-img" src="https://i.pinimg.com/736x/af/cc/1b/afcc1bc1f9e0f64d205233f766b4eced.jpg" alt="Cute Image">
-        </div>
-
-        <h1 id="title-text">Hey my fav hooman</h1>
-
-        <div class="question-text" id="question-text">
-            Did I break your heart by saying mean things?
-        </div>
-
-        <div class="btn-group" id="btn-group">
-            <button class="btn-yes" id="btn-yes">Yes</button>
-            <button class="btn-no" id="btn-no">No</button>
-        </div>
+  <div class="card" id="quizCard">
+    <h1 id="questionText">My baby loves strawberries ? 🍓</h1>
+    <div class="btn-group">
+      <button class="btn-yes" onclick="handleYes()">YES! 💕</button>
+      <button class="btn-no" onclick="handleNo()">No 🥺</button>
     </div>
+  </div>
 
-    <script>
-        // Steps Configuration
-        const steps = [
-            {
-                type: 'yes-dodge',
-                question: "1. Did I break your heart by saying mean things?",
-                yesText: "Yes",
-                noText: "No"
-            },
-            {
-                type: 'yes-dodge',
-                question: "2. Did I hurt you by taunting your vulnerabilities?",
-                yesText: "Yes",
-                noText: "No"
-            },
-            {
-                type: 'yes-dodge',
-                question: "3. Did I make you feel bad about yourself the whole time?",
-                yesText: "Yes",
-                noText: "No"
-            },
-            {
-                type: 'yes-dodge',
-                question: "4. Did I fail to make efforts every single time?",
-                yesText: "Yes",
-                noText: "No"
-            },
-            {
-                type: 'yes-dodge',
-                question: "5. Did I seriously mean it?",
-                yesText: "Yes",
-                noText: "No"
-            },
-            {
-                type: 'exploding-heart',
-                question: "Ohh you clicked yes, NVM That stupid bitchass deserves it.\n\nBut he really really does love you...",
-                btnText: "Next ❤️"
-            },
-            {
-                type: 'no-dodge',
-                question: "7. He'll make things right this time fs",
-                yesText: "Yes",
-                noText: "No"
-            },
-            {
-                type: 'no-dodge',
-                question: "8. He will make you feel special",
-                yesText: "Yes",
-                noText: "No"
-            },
-            {
-                type: 'no-dodge',
-                question: "9. He won't make you regret it this time",
-                yesText: "Yes",
-                noText: "No"
-            },
-            {
-                type: 'final',
-                question: "And lastly, he's trying to improve for you (although you are not there as a teacher/guide), but he'll 100%, no cap because his life gets colored up just by you showing up every day, every moment in his life.\n\nNothing without you he is."
-            }
-        ];
+  <script>
+    const questions = [
+      { text: "My baby loves strawberries ? 🍓", emoji: "🍓", type: "strawberries" },
+      { text: "My baby loves firecrackers ? 🎆", emoji: "🎆", type: "firecrackers" },
+      { text: "My baby loves friesss? 🍟", emoji: "🍟", type: "fries" },
+      { text: "My baby loves christmas ? 🎄✨", emoji: "❄️", type: "christmas" }
+    ];
 
-        let currentStep = 0;
-        let yesDodgeCount = 0;
+    let currentStep = 0;
+    const questionText = document.getElementById("questionText");
+    const quizCard = document.getElementById("quizCard");
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
 
-        // Elements
-        const questionText = document.getElementById('question-text');
-        const btnGroup = document.getElementById('btn-group');
-        const btnYes = document.getElementById('btn-yes');
-        const btnNo = document.getElementById('btn-no');
-        const progressFill = document.getElementById('progress-fill');
-        const mainCard = document.getElementById('main-card');
+    // Canvas Resize
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener("resize", resizeCanvas);
+    resizeCanvas();
 
-        // Falling Hearts Background Animation
-        const canvas = document.getElementById('hearts-canvas');
-        const ctx = canvas.getContext('2d');
-        let hearts = [];
+    // Particle System
+    let particles = [];
 
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+    class Particle {
+      constructor(x, y, emoji) {
+        this.x = x;
+        this.y = y;
+        this.emoji = emoji;
+        this.size = Math.random() * 25 + 25; // Emoji size
+        this.vx = (Math.random() - 0.5) * 12;
+        this.vy = (Math.random() - 0.7) * 14;
+        this.gravity = 0.35;
+        this.opacity = 1;
+        this.rotation = Math.random() * Math.PI * 2;
+        this.vRot = (Math.random() - 0.5) * 0.2;
+      }
+
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        this.vy += this.gravity;
+        this.rotation += this.vRot;
+        this.opacity -= 0.008;
+      }
+
+      draw() {
+        ctx.save();
+        ctx.globalAlpha = Math.max(this.opacity, 0);
+        ctx.translate(this.x, this.y);
+        ctx.rotate(this.rotation);
+        ctx.font = `${this.size}px serif`;
+        ctx.fillText(this.emoji, -this.size / 2, this.size / 2);
+        ctx.restore();
+      }
+    }
+
+    function createExplosion(emoji, count = 70) {
+      const originX = window.innerWidth / 2;
+      const originY = window.innerHeight / 2;
+      for (let i = 0; i < count; i++) {
+        particles.push(new Particle(originX, originY, emoji));
+      }
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let i = particles.length - 1; i >= 0; i--) {
+        particles[i].update();
+        particles[i].draw();
+        if (particles[i].opacity <= 0) {
+          particles.splice(i, 1);
         }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
+      }
+      requestAnimationFrame(animate);
+    }
+    animate();
 
-        class Heart {
-            constructor() {
-                this.reset();
-            }
+    // Sound Synthesis (Sia - Snowman Melody snippet using Web Audio API)
+    function playSnowmanMelody() {
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      if (!AudioContext) return;
+      const audioCtx = new AudioContext();
 
-            reset() {
-                this.x = Math.random() * canvas.width;
-                this.y = -20;
-                this.size = Math.random() * 15 + 10;
-                this.speed = Math.random() * 2 + 1;
-                this.opacity = Math.random() * 0.7 + 0.3;
-                this.dx = Math.random() * 1 - 0.5;
-            }
+      // Simplified melody notes for "Snowman" chorus snippet
+      const notes = [
+        { note: 261.63, duration: 0.4 }, // C4
+        { note: 293.66, duration: 0.4 }, // D4
+        { note: 329.63, duration: 0.6 }, // E4
+        { note: 392.00, duration: 0.6 }, // G4
+        { note: 349.23, duration: 0.4 }, // F4
+        { note: 329.63, duration: 0.4 }, // E4
+        { note: 293.66, duration: 0.8 }, // D4
+      ];
 
-            update() {
-                this.y += this.speed;
-                this.x += this.dx;
-                if (this.y > canvas.height + 20) {
-                    this.reset();
-                }
-            }
+      let startTime = audioCtx.currentTime;
 
-            draw() {
-                ctx.save();
-                ctx.globalAlpha = this.opacity;
-                ctx.fillStyle = '#ff4d6d';
-                ctx.font = `${this.size}px Arial`;
-                ctx.fillText('❤️', this.x, this.y);
-                ctx.restore();
-            }
-        }
+      notes.forEach(({ note, duration }) => {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
 
-        for (let i = 0; i < 40; i++) {
-            hearts.push(new Heart());
-        }
+        osc.type = 'sine';
+        osc.frequency.value = note;
 
-        function animateHearts() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            hearts.forEach(heart => {
-                heart.update();
-                heart.draw();
-            });
-            requestAnimationFrame(animateHearts);
-        }
-        animateHearts();
+        gain.gain.setValueAtTime(0.2, startTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
 
-        // Helper to reset button positioning
-        function resetButtonPositions() {
-            btnYes.style.position = 'static';
-            btnNo.style.position = 'static';
-            btnYes.style.transform = 'none';
-            btnNo.style.transform = 'none';
-        }
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
 
-        // Dodge logic for buttons
-        function dodgeButton(btn) {
-            const containerRect = btnGroup.getBoundingClientRect();
-            const btnRect = btn.getBoundingClientRect();
+        osc.start(startTime);
+        osc.stop(startTime + duration);
 
-            const maxX = containerRect.width - btnRect.width - 20;
-            const maxY = 120;
+        startTime += duration;
+      });
+    }
 
-            const randomX = (Math.random() - 0.5) * maxX;
-            const randomY = (Math.random() - 0.5) * maxY;
+    // Handles YES clicks
+    function handleYes() {
+      const q = questions[currentStep];
 
-            btn.style.position = 'relative';
-            btn.style.transform = `translate(${randomX}px, ${randomY}px)`;
-        }
+      // Trigger Explosion based on item type
+      if (q.type === "strawberries") {
+        createExplosion("🍓");
+      } else if (q.type === "firecrackers") {
+        createExplosion("🎆");
+        createExplosion("✨");
+        // Play song on 2nd question YES as requested!
+        playSnowmanMelody();
+      } else if (q.type === "fries") {
+        createExplosion("🍟");
+      } else if (q.type === "christmas") {
+        createExplosion("🎄");
+        createExplosion("❄️");
+        createExplosion("🎁");
+      }
 
-        // Render current step UI
-        function renderStep() {
-            resetButtonPositions();
-            yesDodgeCount = 0;
+      currentStep++;
 
-            const step = steps[currentStep];
-            progressFill.style.width = `${((currentStep + 1) / steps.length) * 100}%`;
+      // Next Question or Final Screen
+      if (currentStep < questions.length) {
+        setTimeout(() => {
+          questionText.innerText = questions[currentStep].text;
+        }, 300);
+      } else {
+        setTimeout(showFinalMessage, 500);
+      }
+    }
 
-            if (step.type === 'yes-dodge') {
-                questionText.innerText = step.question;
-                btnGroup.innerHTML = `
-                    <button class="btn-yes" id="btn-yes">${step.yesText}</button>
-                    <button class="btn-no" id="btn-no">${step.noText}</button>
-                `;
+    // Handles NO click playful behavior
+    function handleNo() {
+      const btnNo = document.querySelector('.btn-no');
+      btnNo.style.position = 'relative';
+      btnNo.style.left = (Math.random() * 100 - 50) + 'px';
+      btnNo.style.top = (Math.random() * 100 - 50) + 'px';
+    }
 
-                const yBtn = document.getElementById('btn-yes');
-                const nBtn = document.getElementById('btn-no');
-
-                // Hovering Yes dodges 1 time now
-                yBtn.addEventListener('mouseenter', () => {
-                    if (yesDodgeCount < 1) {
-                        dodgeButton(yBtn);
-                        yesDodgeCount++;
-                    }
-                });
-
-                yBtn.addEventListener('click', () => {
-                    if (yesDodgeCount >= 1) {
-                        nextStep();
-                    } else {
-                        dodgeButton(yBtn);
-                        yesDodgeCount++;
-                    }
-                });
-
-                nBtn.addEventListener('mouseenter', () => dodgeButton(nBtn));
-                nBtn.addEventListener('touchstart', (e) => {
-                    e.preventDefault();
-                    dodgeButton(nBtn);
-                });
-
-            } else if (step.type === 'exploding-heart') {
-                questionText.innerText = step.question;
-                btnGroup.innerHTML = `
-                    <div class="exploding-heart-container">
-                        <div class="big-heart" id="big-heart">💖</div>
-                    </div>
-                    <div>
-                        <button class="btn-next" id="btn-next">${step.btnText}</button>
-                    </div>
-                `;
-
-                const bigHeart = document.getElementById('big-heart');
-                const nextBtn = document.getElementById('btn-next');
-
-                function triggerExplosion() {
-                    const container = document.querySelector('.exploding-heart-container');
-                    for (let i = 0; i < 18; i++) {
-                        const p = document.createElement('div');
-                        p.className = 'particle-heart';
-                        p.innerText = '💗';
-                        const angle = (i / 18) * Math.PI * 2;
-                        const dist = Math.random() * 100 + 50;
-                        const tx = Math.cos(angle) * dist + 'px';
-                        const ty = Math.sin(angle) * dist + 'px';
-
-                        p.style.setProperty('--tx', tx);
-                        p.style.setProperty('--ty', ty);
-                        container.appendChild(p);
-
-                        setTimeout(() => p.remove(), 1000);
-                    }
-                }
-
-                bigHeart.addEventListener('click', triggerExplosion);
-                nextBtn.addEventListener('click', () => {
-                    triggerExplosion();
-                    setTimeout(nextStep, 400);
-                });
-
-            } else if (step.type === 'no-dodge') {
-                questionText.innerText = step.question;
-                btnGroup.innerHTML = `
-                    <button class="btn-yes" id="btn-yes">${step.yesText}</button>
-                    <button class="btn-no" id="btn-no">${step.noText}</button>
-                `;
-
-                const yBtn = document.getElementById('btn-yes');
-                const nBtn = document.getElementById('btn-no');
-
-                yBtn.addEventListener('click', nextStep);
-
-                nBtn.addEventListener('mouseenter', () => dodgeButton(nBtn));
-                nBtn.addEventListener('touchstart', (e) => {
-                    e.preventDefault();
-                    dodgeButton(nBtn);
-                });
-
-            } else if (step.type === 'final') {
-                mainCard.classList.add('final-card');
-                questionText.className = 'final-text';
-                questionText.innerText = step.question;
-                btnGroup.innerHTML = `
-                    <div style="font-size: 32px; margin-top: 10px;">❤️✨🌸</div>
-                `;
-            }
-        }
-
-        function nextStep() {
-            if (currentStep < steps.length - 1) {
-                currentStep++;
-                renderStep();
-            }
-        }
-
-        // Initialize
-        renderStep();
-    </script>
+    // Final Screen Message
+    function showFinalMessage() {
+      quizCard.className = "card final-card";
+      quizCard.innerHTML = `
+        <h2>Merry Christmas & Always! 🎄✨</h2>
+        <p>Thanks to my baby for getting born in this world. Or else I would've never gotten to witness a Christmas miracle as beautiful as you.</p>
+        <p>You mahh gurllll is the sweet spicy cute hot magic I never knew I needed and the sweetest gift life could have ever given me :)</p>
+        <div class="signature">YOUR HANDSOME BF ;)</div>
+      `;
+    }
+  </script>
 </body>
 </html>
