@@ -69,6 +69,7 @@
 
     .btn-yes:hover {
       box-shadow: 0 12px 20px rgba(255, 71, 87, 0.6);
+      transform: scale(1.05);
     }
 
     /* Floating particles canvas */
@@ -121,17 +122,17 @@
     </div>
   </div>
 
-  <!-- Hidden YouTube Audio Player -->
+  <!-- Hidden YouTube Audio Player (starts right from 0s) -->
   <div id="audio-container">
-    <iframe id="youtube-player" width="0" height="0" src="https://www.youtube.com/embed/gset79KMmt0?enablejsapi=1&autoplay=0" frameborder="0" allow="autoplay"></iframe>
+    <iframe id="youtube-player" width="0" height="0" src="https://www.youtube.com/embed/gset79KMmt0?enablejsapi=1&autoplay=0&start=0" frameborder="0" allow="autoplay"></iframe>
   </div>
 
   <script>
     const questions = [
-      { text: "My baby loves strawberries ? 🍓", emoji: "🍓", type: "strawberries" },
-      { text: "My baby loves firecrackers ? 🎆", emoji: "🎆", type: "firecrackers" },
-      { text: "My baby loves friesss? 🍟", emoji: "🍟", type: "fries" },
-      { text: "My baby loves christmas ? 🎄✨", emoji: "❄️", type: "christmas" }
+      { text: "My baby loves strawberries ? 🍓" },
+      { text: "My baby loves firecrackers ? 🎆" },
+      { text: "My baby loves friesss? 🍟" },
+      { text: "My baby loves christmas ? 🎄✨" }
     ];
 
     let currentStep = 0;
@@ -186,10 +187,11 @@
       }
     }
 
-    function createExplosion(emojiArray, count = 120) {
+    function createMassiveExplosion() {
       const originX = window.innerWidth / 2;
       const originY = window.innerHeight / 2;
-      for (let i = 0; i < count; i++) {
+      const emojiArray = ["❤️", "💖", "🍟", "🍓", "✨", "💕", "🎆", "🎄", "❄️"];
+      for (let i = 0; i < 200; i++) {
         const randomEmoji = emojiArray[Math.floor(Math.random() * emojiArray.length)];
         particles.push(new Particle(originX, originY, randomEmoji));
       }
@@ -208,41 +210,30 @@
     }
     animate();
 
-    // Play YouTube Music on 2nd Question YES
+    // Play YouTube Music from the start (0 seconds)
     function playYouTubeSong() {
       const iframe = document.getElementById("youtube-player");
-      iframe.src = "https://www.youtube.com/embed/gset79KMmt0?autoplay=1&enablejsapi=1";
+      iframe.src = "https://www.youtube.com/embed/gset79KMmt0?autoplay=1&enablejsapi=1&start=0";
     }
 
     // Handles YES clicks
     function handleYes() {
-      const q = questions[currentStep];
       yesClickCount++;
 
-      // Make the YES button bigger and bigger on clicks!
-      const currentPaddingV = 14 + (yesClickCount * 10);
-      const currentPaddingH = 32 + (yesClickCount * 20);
+      // Make the YES button grow larger on each click
+      const currentPaddingV = 14 + (yesClickCount * 12);
+      const currentPaddingH = 32 + (yesClickCount * 22);
       const currentFontSize = 1.2 + (yesClickCount * 0.4);
       yesBtn.style.padding = `${currentPaddingV}px ${currentPaddingH}px`;
       yesBtn.style.fontSize = `${currentFontSize}rem`;
 
-      // Trigger explosions on 3rd click or specific items
-      if (yesClickCount === 3) {
-        // BIG explosion with hearts, fries, and strawberries across the whole page!
-        createExplosion(["❤️", "💖", "🍟", "🍓", "✨", "💕"], 180);
-      } else {
-        // Standard item explosion for other clicks
-        if (q.type === "strawberries") {
-          createExplosion(["🍓"], 80);
-        } else if (q.type === "firecrackers") {
-          createExplosion(["🎆", "✨"], 80);
-          playYouTubeSong(); // Play Sia song on 2nd question YES
-        } else if (q.type === "fries") {
-          createExplosion(["🍟"], 80);
-        } else if (q.type === "christmas") {
-          createExplosion(["🎄", "❄️", "🎁"], 80);
-        }
+      // Play music on the 2nd question YES right from the start
+      if (yesClickCount === 2) {
+        playYouTubeSong();
       }
+
+      // Trigger massive page explosion on every YES click!
+      createMassiveExplosion();
 
       currentStep++;
 
@@ -260,7 +251,7 @@
     function showFinalMessage() {
       quizCard.className = "card final-card";
       quizCard.innerHTML = `
-        <h2>🎄✨</h2>
+        <h2>Merry Christmas & Always! 🎄✨</h2>
         <p>Thanks to my baby for getting born in this world. Or else I would've never gotten to witness a Christmas miracle as beautiful as you.</p>
         <p>You mahh gurllll is the sweet spicy cute hot magic I never knew I needed and the sweetest gift life could have ever given me :)</p>
         <div class="signature">YOUR HANDSOME BF ;)</div>
