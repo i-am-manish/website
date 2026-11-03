@@ -22,11 +22,41 @@
       position: relative;
     }
 
+    /* Background Snowflakes Container */
+    #snow-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .snowflake {
+      position: absolute;
+      top: -20px;
+      color: white;
+      font-size: 1rem;
+      opacity: 0.8;
+      user-select: none;
+      animation: fallSnow linear infinite;
+    }
+
+    @keyframes fallSnow {
+      0% {
+        transform: translateY(-20px) rotate(0deg);
+      }
+      100% {
+        transform: translateY(105vh) rotate(360deg);
+      }
+    }
+
     /* Container Card */
     .card {
       background: rgba(255, 255, 255, 0.92);
       backdrop-filter: blur(10px);
-      padding: 40px 30px;
+      padding: 30px 25px;
       border-radius: 24px;
       box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
       text-align: center;
@@ -38,16 +68,27 @@
 
     h1 {
       color: #ff4757;
-      font-size: 1.8rem;
-      margin-bottom: 30px;
+      font-size: 1.7rem;
+      margin-bottom: 20px;
       line-height: 1.4;
+    }
+
+    /* Custom Image for Christmas Question */
+    .question-img {
+      width: 100%;
+      max-height: 200px;
+      object-fit: cover;
+      border-radius: 16px;
+      margin-bottom: 20px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+      display: none; /* Shown dynamically */
     }
 
     .btn-group {
       display: flex;
       justify-content: center;
       align-items: center;
-      margin-top: 20px;
+      margin-top: 15px;
       min-height: 80px;
     }
 
@@ -76,7 +117,7 @@
     .floating-emoji {
       position: fixed;
       pointer-events: none;
-      z-index: 5;
+      z-index: 8;
       font-size: 2rem;
       user-select: none;
       animation: fallAndBurst 1.2s ease-out forwards;
@@ -122,48 +163,68 @@
 </head>
 <body>
 
+  <!-- Persistent Background Snowfall -->
+  <div id="snow-container"></div>
+
   <div class="card" id="quizCard">
+    <img id="questionImg" class="question-img" src="" alt="Christmas Special" />
     <h1 id="questionText">My baby loves strawberries ? 🍓</h1>
     <div class="btn-group">
       <button class="btn-yes" id="yesBtn" onclick="handleYes()">YES! 💕</button>
     </div>
   </div>
 
-  <!-- Hidden YouTube Audio Player (starts at exactly 10 seconds) -->
+  <!-- Hidden YouTube Audio Player (starts at 10 seconds) -->
   <div id="audio-container">
     <iframe id="youtube-player" width="0" height="0" src="" frameborder="0" allow="autoplay"></iframe>
   </div>
 
   <script>
+    // Continuous Background Snow Effect
+    const snowContainer = document.getElementById("snow-container");
+    function createSnowflake() {
+      const flake = document.createElement("div");
+      flake.className = "snowflake";
+      flake.innerText = Math.random() > 0.5 ? "❄️" : "❅";
+      flake.style.left = Math.random() * window.innerWidth + "px";
+      flake.style.fontSize = (Math.random() * 10 + 10) + "px";
+      const duration = Math.random() * 3 + 4; // 4 to 7 seconds fall time
+      flake.style.animationDuration = duration + "s";
+      snowContainer.appendChild(flake);
+
+      setTimeout(() => {
+        flake.remove();
+      }, duration * 1000);
+    }
+    setInterval(createSnowflake, 300);
+
     const questions = [
-      { text: "My baby loves strawberries ? 🍓", emojis: ["🍓"] },
-      { text: "My baby loves firecrackers ? 🎆", emojis: ["🎆", "✨", "🔥"] },
-      { text: "My baby loves friesss? 🍟", emojis: ["🍟"] },
-      { text: "My baby loves christmas ? 🎄✨", emojis: ["🎄", "❄️", "🎁", "⭐"] }
+      { text: "My baby loves strawberries ? 🍓", emojis: ["🍓"], img: "" },
+      { text: "My baby loves firecrackers ? 🎆", emojis: ["🎆", "✨", "🔥"], img: "" },
+      { text: "My baby loves friesss? 🍟", emojis: ["🍟"], img: "" },
+      { text: "My baby loves christmas ? 🎄✨", emojis: ["🎄", "❄️", "🎁", "⭐"], img: "https://paintwaint.in/cdn/shop/files/Background_9_ed1353e7-9041-4650-a810-714686588d38.png?v=1764053643&width=720" }
     ];
 
     let currentStep = 0;
     let yesClickCount = 0;
     const questionText = document.getElementById("questionText");
+    const questionImg = document.getElementById("questionImg");
     const quizCard = document.getElementById("quizCard");
     const yesBtn = document.getElementById("yesBtn");
 
-    // Lightweight DOM-based explosion & shower (Zero Lag)
+    // Lightweight DOM-based explosion & shower
     function createLightShow(emojiArray) {
-      const totalEmojis = 25; // Perfect balance: smooth & covers the whole screen
-
+      const totalEmojis = 25; 
       for (let i = 0; i < totalEmojis; i++) {
         const span = document.createElement('div');
         span.className = 'floating-emoji';
         span.innerText = emojiArray[Math.floor(Math.random() * emojiArray.length)];
 
-        // Start from center of the screen
         const startX = window.innerWidth / 2;
         const startY = window.innerHeight / 2;
         span.style.left = startX + 'px';
         span.style.top = startY + 'px';
 
-        // Random dispersion across the full browser window width and height
         const randX = (Math.random() - 0.5) * window.innerWidth * 0.9;
         const randY = (Math.random() - 0.6) * window.innerHeight * 0.8;
         span.style.setProperty('--randX', `${randX}px`);
@@ -171,7 +232,6 @@
 
         document.body.appendChild(span);
 
-        // Remove element after animation ends to keep DOM clean
         setTimeout(() => {
           span.remove();
         }, 1200);
@@ -201,7 +261,7 @@
         playYouTubeSong();
       }
 
-      // Trigger lag-free layout explosion & shower
+      // Trigger lag-free explosion & shower
       createLightShow(q.emojis);
 
       currentStep++;
@@ -210,6 +270,14 @@
       if (currentStep < questions.length) {
         setTimeout(() => {
           questionText.innerText = questions[currentStep].text;
+          
+          // Handle specific question image
+          if (questions[currentStep].img) {
+            questionImg.src = questions[currentStep].img;
+            questionImg.style.display = "block";
+          } else {
+            questionImg.style.display = "none";
+          }
         }, 250);
       } else {
         setTimeout(showFinalMessage, 500);
@@ -218,6 +286,7 @@
 
     // Final Screen Message
     function showFinalMessage() {
+      questionImg.style.display = "none";
       quizCard.className = "card final-card";
       quizCard.innerHTML = `
         <h2>Merry Christmas & Always! 🎄✨</h2>
