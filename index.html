@@ -122,17 +122,17 @@
     </div>
   </div>
 
-  <!-- Hidden YouTube Audio Player (starts at 10 seconds, skipping the first 10s) -->
+  <!-- Hidden YouTube Audio Player (starts at exactly 10 seconds) -->
   <div id="audio-container">
-    <iframe id="youtube-player" width="0" height="0" src="https://www.youtube.com/embed/gset79KMmt0?enablejsapi=1&autoplay=0&start=10" frameborder="0" allow="autoplay"></iframe>
+    <iframe id="youtube-player" width="0" height="0" src="" frameborder="0" allow="autoplay"></iframe>
   </div>
 
   <script>
     const questions = [
-      { text: "My baby loves strawberries ? 🍓" },
-      { text: "My baby loves firecrackers ? 🎆" },
-      { text: "My baby loves friesss? 🍟" },
-      { text: "My baby loves christmas ? 🎄✨" }
+      { text: "My baby loves strawberries ? 🍓", emojis: ["🍓"] },
+      { text: "My baby loves firecrackers ? 🎆", emojis: ["🎆", "✨", "🔥"] },
+      { text: "My baby loves friesss? 🍟", emojis: ["🍟"] },
+      { text: "My baby loves christmas ? 🎄✨", emojis: ["🎄", "❄️", "🎁", "⭐"] }
     ];
 
     let currentStep = 0;
@@ -187,10 +187,9 @@
       }
     }
 
-    function createMassiveExplosion() {
+    function createSpecificExplosion(emojiArray) {
       const originX = window.innerWidth / 2;
       const originY = window.innerHeight / 2;
-      const emojiArray = ["❤️", "💖", "🍟", "🍓", "✨", "💕", "🎆", "🎄", "❄️"];
       for (let i = 0; i < 200; i++) {
         const randomEmoji = emojiArray[Math.floor(Math.random() * emojiArray.length)];
         particles.push(new Particle(originX, originY, randomEmoji));
@@ -210,7 +209,7 @@
     }
     animate();
 
-    // Play YouTube Music starting at 10 seconds
+    // Play YouTube Music starting precisely at 10 seconds
     function playYouTubeSong() {
       const iframe = document.getElementById("youtube-player");
       iframe.src = "https://www.youtube.com/embed/gset79KMmt0?autoplay=1&enablejsapi=1&start=10";
@@ -218,6 +217,7 @@
 
     // Handles YES clicks
     function handleYes() {
+      const q = questions[currentStep];
       yesClickCount++;
 
       // Make the YES button grow larger on each click
@@ -227,13 +227,13 @@
       yesBtn.style.padding = `${currentPaddingV}px ${currentPaddingH}px`;
       yesBtn.style.fontSize = `${currentFontSize}rem`;
 
-      // Play music starting at 10s on the 2nd question YES
-      if (yesClickCount === 2) {
+      // Play song starting at 10s on the 2nd question (firecrackers)
+      if (currentStep === 1) {
         playYouTubeSong();
       }
 
-      // Trigger massive page explosion on every YES click!
-      createMassiveExplosion();
+      // Trigger full browser explosion using ONLY the emojis for the current question
+      createSpecificExplosion(q.emojis);
 
       currentStep++;
 
