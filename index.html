@@ -185,41 +185,39 @@
     </div>
 
     <script>
-        const defaultImg = "https://i.pinimg.com/236x/84/df/9e/84df9ea8fc79d5df1f0535eb105d39c9.jpg";
-        const specialImg = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcREG4mtCNNkBTD07edwnzWIgGDV043lc92BnGx5-9jkTw&s=10";
-
+        // Assigned images for each step
         const steps = [
             {
                 text: "Life without you literally sucks. I'm nothing without you.",
-                image: defaultImg
+                image: "https://i.pinimg.com/236x/84/df/9e/84df9ea8fc79d5df1f0535eb105d39c9.jpg"
             },
             {
                 text: "I deserve a life in hell.<br>But before making it to hell, please let me experience heaven on earth by being with ya.",
-                image: defaultImg
+                image: "https://i.pinimg.com/736x/25/17/5f/25175f4199d590ef6b93c56d4c210ed8.jpg"
             },
             {
                 text: "No matter how crazy it gets, just your face and voice makes everything feel right no cap.",
-                image: defaultImg
+                image: "https://images.pexels.com/photos/30321467/pexels-photo-30321467/free-photo-of-two-cats-cuddling-in-warm-sunlight.jpeg?auto=compress&w=1260&h=750&dpr=1"
             },
             {
                 text: "You are my that one supporter in every scene.<br>Be it dad, be it interview na clear hona, be it my wo unknown disease where i was not able to walk, be it content flop jaana, be it shirt pe kuch girke embarrass hona.... in all such scenarios.",
-                image: specialImg
+                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcREG4mtCNNkBTD07edwnzWIgGDV043lc92BnGx5-9jkTw&s=10"
             },
             {
                 text: "When you love a person so so so much, putting all efforts 110% and when that douche says hurtful mean things, it can literally destroy every feeling you have towards him.",
-                image: defaultImg
+                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6lxt-Anvr8UnyOFSe84jLjQyOGbKBmp2v0DiW6uYumdDqYdq7Izxn2E8&s=10"
             },
             {
                 text: "You are literally a perfect gem that everyone dreams to have in their life.<br>But some fucker craps like me fail to notice it. Very Bad. Bad person.",
-                image: defaultImg
+                image: "https://i.redd.it/wrk11ahyn3jf1.jpeg"
             },
             {
                 text: "If anyone should learn how to love a person, they should come to you. I bet you won't find a single soul on earth that has a capacity to love so much.",
-                image: defaultImg
+                image: "https://i.pinimg.com/474x/ea/ef/da/eaefdaec97b53c6510083d543e0fcfa7.jpg"
             },
             {
                 text: "Lastly, I'm here to stay and make the difference that I can make till my last dying breathe.<br>I'm sure my Dad will beat my ass up if he's watching all of my shitfucks from up there.<br><br>Anyways, until my final breath, my only goal is to be the guy you deserve and love you endlessly.",
-                image: defaultImg
+                image: "https://i.redd.it/vamy6d7ajfr81.jpg"
             }
         ];
 
@@ -233,7 +231,6 @@
 
             const current = steps[currentStep];
 
-            // Image rendered FIRST, text rendered SECOND
             let htmlContent = "";
             if (current.image) {
                 htmlContent += `<img src="${current.image}" alt="Memory Image" class="message-image">`;
