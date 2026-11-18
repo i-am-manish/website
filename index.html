@@ -1,303 +1,289 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>For My Girl 💕</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>V2 because V1 did not work</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Sacramento&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      /* Aurora Borealis background image with a dark overlay for readability */
-      background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5)), 
-                  url('https://upload.wikimedia.org/wikipedia/commons/d/d3/Aurora_borealis_over_Eielson_Air_Force_Base%2C_Alaska.jpg') no-repeat center center fixed;
-      background-size: cover;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      overflow: hidden;
-      position: relative;
-    }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #050b14;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
 
-    /* Background Snowflakes Container */
-    #snow-container {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      pointer-events: none;
-      z-index: 1;
-    }
+        /* Polar Lights (Aurora) Background Effect */
+        .aurora-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: linear-gradient(135deg, #050b14 0%, #0a1f2c 50%, #022b21 100%);
+            overflow: hidden;
+        }
 
-    .snowflake {
-      position: absolute;
-      top: -30px;
-      color: #ffffff;
-      font-size: 1.3rem;
-      text-shadow: 0 0 6px rgba(255, 255, 255, 0.9), 0 0 12px rgba(0, 255, 255, 0.5);
-      user-select: none;
-      animation: fallSnow linear infinite;
-    }
+        .aurora-glow {
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            top: -50%;
+            left: -50%;
+            background: radial-gradient(circle, rgba(0, 255, 157, 0.15) 0%, rgba(0, 150, 255, 0.1) 30%, transparent 70%);
+            animation: auroraAnimation 15s ease infinite alternate;
+        }
 
-    @keyframes fallSnow {
-      0% {
-        transform: translateY(-30px) rotate(0deg);
-      }
-      100% {
-        transform: translateY(105vh) rotate(360deg);
-      }
-    }
+        @keyframes auroraAnimation {
+            0% { transform: translate(-10%, -10%) rotate(0deg); }
+            100% { transform: translate(10%, 10%) rotate(180deg); }
+        }
 
-    /* Container Card */
-    .card {
-      background: rgba(255, 255, 255, 0.92);
-      backdrop-filter: blur(10px);
-      padding: 30px 25px;
-      border-radius: 24px;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-      text-align: center;
-      max-width: 500px;
-      width: 90%;
-      z-index: 10;
-      transition: all 0.4s ease;
-    }
+        /* Snowfall Effect */
+        .snowflake {
+            position: absolute;
+            top: -10px;
+            background: #ffffff;
+            border-radius: 50%;
+            opacity: 0.8;
+            animation: fall linear infinite;
+            z-index: -1;
+        }
 
-    h1 {
-      color: #ff4757;
-      font-size: 1.7rem;
-      margin-bottom: 20px;
-      line-height: 1.4;
-    }
+        @keyframes fall {
+            0% {
+                transform: translateY(-10px) translateX(0);
+            }
+            100% {
+                transform: translateY(105vh) translateX(20px);
+            }
+        }
 
-    /* Custom Image for Christmas Question */
-    .question-img {
-      width: 100%;
-      max-height: 200px;
-      object-fit: cover;
-      border-radius: 16px;
-      margin-bottom: 20px;
-      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-      display: none;
-    }
+        /* Main Card Container */
+        .container {
+            width: 90%;
+            max-width: 600px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 40px 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
 
-    .btn-group {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin-top: 15px;
-      min-height: 80px;
-    }
+        h1.site-title {
+            font-family: 'Sacramento', cursive;
+            font-size: 2.8rem;
+            color: #00ff9d;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(0, 255, 157, 0.4);
+        }
 
-    button {
-      padding: 14px 32px;
-      font-size: 1.2rem;
-      font-weight: bold;
-      border: none;
-      border-radius: 50px;
-      cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s, font-size 0.2s, padding 0.2s;
-    }
+        .message-box {
+            min-height: 240px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+        }
 
-    .btn-yes {
-      background: linear-gradient(45deg, #ff4757, #ff6b81);
-      color: white;
-      box-shadow: 0 8px 15px rgba(255, 71, 87, 0.4);
-    }
+        .message-text {
+            font-size: 1.1rem;
+            line-height: 1.5;
+            color: #e0f2fe;
+            margin-bottom: 15px;
+            animation: fadeIn 0.6s ease-in-out;
+        }
 
-    .btn-yes:hover {
-      box-shadow: 0 12px 20px rgba(255, 71, 87, 0.6);
-      transform: scale(1.05);
-    }
+        .message-image {
+            max-width: 150px;
+            max-height: 150px;
+            border-radius: 12px;
+            object-fit: cover;
+            border: 2px solid rgba(0, 255, 157, 0.3);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            animation: fadeIn 0.6s ease-in-out;
+        }
 
-    /* Lightweight floating emoji shower styling */
-    .floating-emoji {
-      position: fixed;
-      pointer-events: none;
-      z-index: 15;
-      font-size: 2rem;
-      user-select: none;
-      animation: fallAndBurst 1.2s ease-out forwards;
-    }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-    @keyframes fallAndBurst {
-      0% {
-        opacity: 1;
-        transform: translate(0, 0) scale(0.4) rotate(0deg);
-      }
-      100% {
-        opacity: 0;
-        transform: translate(var(--randX), var(--randY)) scale(1.4) rotate(360deg);
-      }
-    }
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-    /* Final Card Styling */
-    .final-card h2 {
-      color: #ff4757;
-      font-size: 2rem;
-      margin-bottom: 20px;
-    }
+        button {
+            background: linear-gradient(135deg, #00ff9d 0%, #00b8ff 100%);
+            color: #050b14;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 255, 157, 0.3);
+        }
 
-    .final-card p {
-      color: #444;
-      font-size: 1.15rem;
-      line-height: 1.7;
-      margin-bottom: 15px;
-    }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 255, 157, 0.5);
+        }
 
-    .signature {
-      margin-top: 25px;
-      font-size: 1.3rem;
-      font-weight: bold;
-      color: #ff4757;
-      letter-spacing: 1px;
-    }
+        button:disabled {
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.3);
+            cursor: not-allowed;
+            box-shadow: none;
+        }
 
-    #audio-container {
-      display: none;
-    }
-  </style>
+        .step-counter {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+    </style>
 </head>
 <body>
 
-  <!-- Persistent Background Snowfall -->
-  <div id="snow-container"></div>
-
-  <div class="card" id="quizCard">
-    <img id="questionImg" class="question-img" src="" alt="Christmas Special" />
-    <h1 id="questionText">My baby loves strawberries ? 🍓</h1>
-    <div class="btn-group">
-      <button class="btn-yes" id="yesBtn" onclick="handleYes()">YES! 💕</button>
+    <div class="aurora-bg">
+        <div class="aurora-glow"></div>
     </div>
-  </div>
 
-  <!-- Hidden YouTube Audio Player (starts at 10 seconds) -->
-  <div id="audio-container">
-    <iframe id="youtube-player" width="0" height="0" src="" frameborder="0" allow="autoplay"></iframe>
-  </div>
+    <div class="container">
+        <h1 class="site-title">V2 because V1 did not work</h1>
+        
+        <div class="message-box" id="messageBox">
+            <!-- Dynamic content injected via JS -->
+        </div>
 
-  <script>
-    // Continuous Background Snow Effect
-    const snowContainer = document.getElementById("snow-container");
-    function createSnowflake() {
-      const flake = document.createElement("div");
-      flake.className = "snowflake";
-      flake.innerText = Math.random() > 0.5 ? "❄️" : "❅";
-      flake.style.left = Math.random() * window.innerWidth + "px";
-      flake.style.fontSize = (Math.random() * 12 + 12) + "px";
-      const duration = Math.random() * 3 + 4; // 4 to 7 seconds fall time
-      flake.style.animationDuration = duration + "s";
-      snowContainer.appendChild(flake);
+        <div class="nav-buttons">
+            <button id="prevBtn" onclick="prevStep()" disabled>Previous</button>
+            <span class="step-counter" id="stepCounter">1 / 8</span>
+            <button id="nextBtn" onclick="nextStep()">Next</button>
+        </div>
+    </div>
 
-      setTimeout(() => {
-        flake.remove();
-      }, duration * 1000);
-    }
-    setInterval(createSnowflake, 200);
+    <script>
+        // Array of your messages with the first image assigned to all steps
+        const defaultImg = "https://i.pinimg.com/236x/84/df/9e/84df9ea8fc79d5df1f0535eb105d39c9.jpg";
+        const specialImg = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcREG4mtCNNkBTD07edwnzWIgGDV043lc92BnGx5-9jkTw&s=10";
 
-    const questions = [
-      { text: "My baby loves strawberries ? 🍓", emojis: ["🍓"], img: "" },
-      { text: "My baby loves firecrackers ? 🎆", emojis: ["🎆", "✨", "🔥"], img: "" },
-      { text: "My baby loves friesss? 🍟", emojis: ["🍟"], img: "" },
-      { text: "My baby loves christmas ? 🎄✨", emojis: ["🎄", "❄️", "🎁", "⭐"], img: "https://paintwaint.in/cdn/shop/files/Background_9_ed1353e7-9041-4650-a810-714686588d38.png?v=1764053643&width=720" }
-    ];
+        const steps = [
+            {
+                text: "Life without you literally sucks. I'm nothing without you.",
+                image: defaultImg
+            },
+            {
+                text: "I deserve a life in hell.<br>But before making it to hell, please let me experience heaven like feeling by being with ya.",
+                image: defaultImg
+            },
+            {
+                text: "No matter how crazy it gets, just your face and voice makes everything feel right no cap.",
+                image: defaultImg
+            },
+            {
+                text: "You are my that one supporter in every scene.<br>Be it dad, be it interview na clear hona, be it my wo unknown disease where i was not able to walk, be it content flop jaana, be it shirt pe kuch girke embarrass hona.... in all such scenarios.",
+                image: specialImg
+            },
+            {
+                text: "When you love a person so so so much, putting all efforts 110% and when that douche says hurtful mean things, it can literally destroy every feeling you have towards him.",
+                image: defaultImg
+            },
+            {
+                text: "You are literally a perfect gem that everyone dreams to have in their life.<br>But some fucker craps like me fail to notice it. Very Bad. Bad person.",
+                image: defaultImg
+            },
+            {
+                text: "If anyone should learn how to love a person, they should come to you. I bet you won't find a single soul on earth that has a capacity to love so much.",
+                image: defaultImg
+            },
+            {
+                text: "Lastly, I'm here to stay and make the difference that I can make till my last dying breathe.<br>I'm sure my Dad will beat my ass up if he's watching all of my shitfucks from up there.<br><br>Anyways, until my final breath, my only goal is to be the guy you deserve and love you endlessly.",
+                image: defaultImg
+            }
+        ];
 
-    let currentStep = 0;
-    let yesClickCount = 0;
-    const questionText = document.getElementById("questionText");
-    const questionImg = document.getElementById("questionImg");
-    const quizCard = document.getElementById("quizCard");
-    const yesBtn = document.getElementById("yesBtn");
+        let currentStep = 0;
 
-    // Lightweight DOM-based explosion & shower
-    function createLightShow(emojiArray) {
-      const totalEmojis = 25; 
-      for (let i = 0; i < totalEmojis; i++) {
-        const span = document.createElement('div');
-        span.className = 'floating-emoji';
-        span.innerText = emojiArray[Math.floor(Math.random() * emojiArray.length)];
+        function updateContent() {
+            const messageBox = document.getElementById('messageBox');
+            const stepCounter = document.getElementById('stepCounter');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
 
-        const startX = window.innerWidth / 2;
-        const startY = window.innerHeight / 2;
-        span.style.left = startX + 'px';
-        span.style.top = startY + 'px';
+            const current = steps[currentStep];
 
-        const randX = (Math.random() - 0.5) * window.innerWidth * 0.9;
-        const randY = (Math.random() - 0.6) * window.innerHeight * 0.8;
-        span.style.setProperty('--randX', `${randX}px`);
-        span.style.setProperty('--randY', `${randY}px`);
+            let htmlContent = `<div class="message-text">${current.text}</div>`;
+            if (current.image) {
+                htmlContent += `<img src="${current.image}" alt="Memory Image" class="message-image">`;
+            }
 
-        document.body.appendChild(span);
+            messageBox.innerHTML = htmlContent;
+            stepCounter.innerText = `${currentStep + 1} / ${steps.length}`;
 
-        setTimeout(() => {
-          span.remove();
-        }, 1200);
-      }
-    }
+            prevBtn.disabled = currentStep === 0;
+            nextBtn.innerText = currentStep === steps.length - 1 ? "End ❤️" : "Next";
+        }
 
-    // Play YouTube Music starting precisely at 10 seconds
-    function playYouTubeSong() {
-      const iframe = document.getElementById("youtube-player");
-      iframe.src = "https://www.youtube.com/embed/gset79KMmt0?autoplay=1&enablejsapi=1&start=10";
-    }
+        function nextStep() {
+            if (currentStep < steps.length - 1) {
+                currentStep++;
+                updateContent();
+            } else {
+                alert("Thank you for reading everything. I love you!");
+            }
+        }
 
-    // Handles YES clicks
-    function handleYes() {
-      const q = questions[currentStep];
-      yesClickCount++;
+        function prevStep() {
+            if (currentStep > 0) {
+                currentStep--;
+                updateContent();
+            }
+        }
 
-      // Make the YES button grow larger smoothly
-      const currentPaddingV = 14 + (yesClickCount * 8);
-      const currentPaddingH = 32 + (yesClickCount * 14);
-      const currentFontSize = 1.2 + (yesClickCount * 0.25);
-      yesBtn.style.padding = `${currentPaddingV}px ${currentPaddingH}px`;
-      yesBtn.style.fontSize = `${currentFontSize}rem`;
+        // Generate Falling Snowflakes
+        function createSnowflakes() {
+            const snowCount = 50;
+            for (let i = 0; i < snowCount; i++) {
+                const snowflake = document.createElement('div');
+                snowflake.classList.add('snowflake');
+                snowflake.style.left = `${Math.random() * 100}vw`;
+                snowflake.style.top = `${Math.random() * -100}vh`;
+                const size = Math.random() * 4 + 2;
+                snowflake.style.width = `${size}px`;
+                snowflake.style.height = `${size}px`;
+                snowflake.style.animationDuration = `${Math.random() * 5 + 3}s`;
+                snowflake.style.animationDelay = `${Math.random() * 5}s`;
+                document.body.appendChild(snowflake);
+            }
+        }
 
-      // Play song starting at 10s on the 2nd question (firecrackers)
-      if (currentStep === 1) {
-        playYouTubeSong();
-      }
-
-      // Trigger lag-free explosion & shower
-      createLightShow(q.emojis);
-
-      currentStep++;
-
-      // Next Question or Final Screen
-      if (currentStep < questions.length) {
-        setTimeout(() => {
-          questionText.innerText = questions[currentStep].text;
-          
-          // Handle specific question image
-          if (questions[currentStep].img) {
-            questionImg.src = questions[currentStep].img;
-            questionImg.style.display = "block";
-          } else {
-            questionImg.style.display = "none";
-          }
-        }, 250);
-      } else {
-        setTimeout(showFinalMessage, 500);
-      }
-    }
-
-    // Final Screen Message
-    function showFinalMessage() {
-      questionImg.style.display = "none";
-      quizCard.className = "card final-card";
-      quizCard.innerHTML = `
-        <h2>Merry Christmas & Always! 🎄✨</h2>
-        <p>Thanks to my baby for getting born in this world. Or else I would've never gotten to witness a Christmas miracle as beautiful as you.</p>
-        <p>You mahh gurllll is the sweet spicy cute hot magic I never knew I needed and the sweetest gift life could have ever given me :)</p>
-        <div class="signature">YOUR HANDSOME BF ;)</div>
-      `;
-    }
-  </script>
+        // Initialize
+        window.onload = () => {
+            updateContent();
+            createSnowflakes();
+        };
+    </script>
 </body>
 </html>
